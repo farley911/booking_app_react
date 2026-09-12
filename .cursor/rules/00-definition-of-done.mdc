@@ -110,13 +110,13 @@ A green automated accessibility gate means no violation detectable by the config
 For every code-changing task, run:
 
 ```bash
-npm run typecheck
-npm run lint
-npm run lint:styles
-npm run test:coverage
-npm run betterer:ci
-npm run build
-npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+pnpm run typecheck
+pnpm run lint
+pnpm run lint:styles
+pnpm run test:coverage
+pnpm run betterer:ci
+pnpm run build
+pnpm exec axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
 ```
 
 `APP_URL` must be supplied by the configured environment.
@@ -208,13 +208,13 @@ At the end of every code-changing task, summarize:
 Explicitly report the result of:
 
 ```text
-npm run typecheck
-npm run lint
-npm run lint:styles
-npm run test:coverage
-npm run betterer:ci
-npm run build
-npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+pnpm run typecheck
+pnpm run lint
+pnpm run lint:styles
+pnpm run test:coverage
+pnpm run betterer:ci
+pnpm run build
+pnpm exec axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
 ```
 
 Also report any additional automated validation required by an applicable project rule that was executed as part of the normal quality pipeline.

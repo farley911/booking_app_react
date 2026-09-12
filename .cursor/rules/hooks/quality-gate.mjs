@@ -44,51 +44,51 @@ if (input.loop_count >= ALLOW_DEBRIEF_EXIT_AT_LOOP) {
   respond({})
 }
 
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm'
-const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx'
+const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
 
 const gates = [
   {
     name: 'Typecheck',
-    command: npm,
+    command: pnpm,
     args: ['run', 'typecheck'],
-    displayCommand: 'npm run typecheck',
+    displayCommand: 'pnpm run typecheck',
   },
   {
     name: 'ESLint',
-    command: npm,
+    command: pnpm,
     args: ['run', 'lint'],
-    displayCommand: 'npm run lint',
+    displayCommand: 'pnpm run lint',
   },
   {
     name: 'Stylelint',
-    command: npm,
+    command: pnpm,
     args: ['run', 'lint:styles'],
-    displayCommand: 'npm run lint:styles',
+    displayCommand: 'pnpm run lint:styles',
   },
   {
     name: 'Tests',
-    command: npm,
+    command: pnpm,
     args: ['run', 'test:coverage'],
-    displayCommand: 'npm run test:coverage',
+    displayCommand: 'pnpm run test:coverage',
   },
   {
     name: 'Quality Ratchet',
-    command: npm,
+    command: pnpm,
     args: ['run', 'betterer:ci'],
-    displayCommand: 'npm run betterer:ci',
+    displayCommand: 'pnpm run betterer:ci',
   },
   {
     name: 'Build',
-    command: npm,
+    command: pnpm,
     args: ['run', 'build'],
-    displayCommand: 'npm run build',
+    displayCommand: 'pnpm run build',
   },
   {
     name: 'WCAG Tier 1',
-    command: npx,
+    command: pnpm,
     args: process.env.APP_URL
       ? [
+          'exec',
           'axe',
           process.env.APP_URL,
           '--tags',
@@ -97,7 +97,7 @@ const gates = [
         ]
       : null,
     displayCommand:
-      'npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit',
+      'pnpm exec axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit',
     configurationError: process.env.APP_URL
       ? null
       : 'APP_URL is not configured for the active environment.',

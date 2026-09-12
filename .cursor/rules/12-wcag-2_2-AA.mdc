@@ -26,7 +26,7 @@ Development uses the locally running application. Deployed environments use thei
 Run Tier 1 automated WCAG validation with:
 
 ```bash
-npx axe "$APP_URL" \
+pnpm exec axe "$APP_URL" \
   --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa \
   --exit
 ```

@@ -82,7 +82,7 @@ merely to hide or bypass an error.
 
 Configuration changes must solve an actual project requirement.
 
-`.betterer.results` is an exception only when it is updated by normal `npm run betterer` execution because a tracked quality metric has genuinely improved.
+`.betterer.results` is an exception only when it is updated by normal `pnpm run betterer` execution because a tracked quality metric has genuinely improved.
 
 Do not:
 
@@ -94,7 +94,7 @@ Do not:
 
 ## Dependencies
 
-Use npm for this repository.
+Use pnpm for this repository.
 
 Do not introduce a new runtime or development dependency unless it provides a clear benefit to the requested task.
 
@@ -153,7 +153,7 @@ The current Betterer baseline stored in `.betterer.results` represents the minim
 The Betterer quality gate is not green unless:
 
 ```bash
-npm run betterer:ci
+pnpm run betterer:ci
 ```
 
 passes successfully after the test suite has produced its coverage results.
@@ -169,10 +169,10 @@ When Betterer reports a regression:
 
 When quality has genuinely improved and `betterer:ci` reports that the committed baseline is stale:
 
-* run `npm run betterer` without `--update`;
+* run `pnpm run betterer` without `--update`;
 * allow Betterer to record the improved baseline;
 * commit the resulting `.betterer.results` change;
-* re-run `npm run betterer:ci`.
+* re-run `pnpm run betterer:ci`.
 
 Normal Betterer execution may advance the baseline when quality improves.
 

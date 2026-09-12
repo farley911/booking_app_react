@@ -1,0 +1,4 @@
+allowBuilds:
+  chromedriver: true
+  core-js: true
+  esbuild: true

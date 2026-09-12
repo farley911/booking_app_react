@@ -1,7 +1,7 @@
 import { regexp } from '@betterer/regexp'
 
 // The coverage ratchets below are disabled because this template ships
-// without a test runner. Once `npm run test:coverage` is pointed at a
+// without a test runner. Once `pnpm run test:coverage` is pointed at a
 // runner that writes `coverage/coverage-summary.json`, restore the
 // imports and the four entries in the exported object.
 //

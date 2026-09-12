@@ -6,14 +6,14 @@ It contains no UI framework, no build tool, and no test runner. What it does con
 quality bar those tools are expected to meet: TypeScript configuration, ESLint, Stylelint,
 the Betterer quality ratchet, and the Cursor rules and stop hook that enforce them.
 
-Clone it, install the framework and test runner you want, and point the existing npm scripts at
+Clone it, install the framework and test runner you want, and point the existing pnpm scripts at
 them. The scripts are the contract; the rules and gates stay the same regardless of what you
 plug in underneath.
 
 ## Getting started
 
 ```bash
-npm install
+pnpm install
 ```
 
 `.env.example` ships arbitrary placeholder URLs. The port is not a recommendation:
@@ -26,7 +26,7 @@ APP_URL=http://localhost:3000
 When you add an application, set both values from that app once they are known. If a
 scaffold was used, take them from the completed scaffold. Prompt only for values the app
 does not already define. Placeholders are allowed until then. `APP_URL` may match
-`START_URL` locally. Copy the file to `.env` if you need local overrides. `npm start`
+`START_URL` locally. Copy the file to `.env` if you need local overrides. `pnpm run start`
 should serve `START_URL`.
 
 Several quality gates fail on a fresh clone. That is expected and intentional: they stay red
@@ -34,13 +34,13 @@ until you wire up the tooling they depend on.
 
 | Gate | State on a fresh clone |
 | --- | --- |
-| `npm run lint` | Passes |
-| `npm run betterer:ci` | Passes |
-| `npm run typecheck` | Fails until `src/` contains TypeScript |
-| `npm run lint:styles` | Fails until `src/` contains stylesheets |
-| `npm test` / `npm run test:coverage` | Fails until a test runner is wired up |
-| `npm run build` | Fails until a build tool is wired up |
-| `npx axe "$APP_URL"` | Fails until `npm start` is serving the configured URL |
+| `pnpm run lint` | Passes |
+| `pnpm run betterer:ci` | Passes |
+| `pnpm run typecheck` | Fails until `src/` contains TypeScript |
+| `pnpm run lint:styles` | Fails until `src/` contains stylesheets |
+| `pnpm run test` / `pnpm run test:coverage` | Fails until a test runner is wired up |
+| `pnpm run build` | Fails until a build tool is wired up |
+| `pnpm exec axe "$APP_URL"` | Fails until `pnpm run start` is serving the configured URL |
 
 ## The script contract
 
@@ -71,7 +71,7 @@ have the coverage run emit `coverage/coverage-summary.json`.
 
 That summary file is what re-enables the four coverage ratchets in `.betterer.ts`. They are
 present but commented out, along with the imports they need. Uncomment them once coverage
-output exists, then run `npm run betterer` to record the first baseline.
+output exists, then run `pnpm run betterer` to record the first baseline.
 
 If your runner needs ESLint support, add its plugin to the config yourself. `eslint.config.js`
 deliberately ships without runner-specific or framework-specific plugins.
@@ -93,7 +93,7 @@ Then:
    `APP_URL` may match `START_URL` locally.
 2. Point Stylelint, the `lint:styles` glob, and the Betterer style include at the stylesheet
    language actually in use.
-3. Point `npm start` at the command that serves `START_URL`.
+3. Point `pnpm run start` at the command that serves `START_URL`.
 4. Point the other script-contract names at the stack's commands. Do not rename the scripts.
 5. Add whichever compiler options, type packages, and lint plugins the framework requires.
    `tsconfig.app.json` ships with no framework-specific compiler options and no ambient `types`.
@@ -118,12 +118,12 @@ The directories are empty placeholders held by `.gitkeep` files.
 `.cursor/rules/12-wcag-2_2-AA.mdc` requires automated WCAG 2.2 AA validation against `APP_URL`:
 
 ```bash
-npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+pnpm exec axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
 ```
 
 The stop hook reads `APP_URL` from the environment, then `.env`, then the placeholders in
 `.env.example`. If `APP_URL` is unset, it falls back to `START_URL`. This axe run is the only
-automated accessibility coverage until you add more. It expects `npm start` to be serving that
+automated accessibility coverage until you add more. It expects `pnpm run start` to be serving that
 URL.
 
 ## Quality gates
