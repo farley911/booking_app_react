@@ -1,8 +1,7 @@
 ---
-
 description: Framework-agnostic testing integrity, behavioral coverage, and acceptance-criteria requirements
-alwaysApply: true
------------------
+alwaysApply: false
+---
 
 # Testing and Acceptance Criteria
 

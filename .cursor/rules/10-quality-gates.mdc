@@ -1,37 +1,12 @@
 ---
-description: Non-negotiable engineering quality and completion requirements
+description: Non-negotiable engineering quality-gate, anti-bypass, repair, dependency, and quality-ratchet requirements
 alwaysApply: true
------------------
+---
 
 # Engineering Quality Gates
 
 These requirements are mandatory for every code-changing task.
 
-## Definition of Done
-
-Do not state or imply that a task is complete until all applicable validation has been performed.
-
-Before declaring a task complete, run all repository quality gates:
-
-```bash
-npm run typecheck
-npm run lint
-npm run lint:styles
-npm run test:coverage
-npm run betterer:ci
-npm run build
-npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
-```
-
-`APP_URL` must be supplied by the configured environment.
-
-Development configuration should point it at the locally running application. Deployed environments should provide their corresponding application URL.
-
-All applicable quality gates must complete successfully.
-
-Manual accessibility-review warnings do not fail Definition of Done.
-
-All applicable requirements defined by other `alwaysApply` MDC rules must also be satisfied before completion.
 
 ## Validation Failures
 
@@ -175,7 +150,7 @@ Betterer is a quality ratchet, not a replacement for the repository's absolute q
 
 The current Betterer baseline stored in `.betterer.results` represents the minimum acceptable quality for all tracked metrics.
 
-A task is not `VERIFIED COMPLETE` unless:
+The Betterer quality gate is not green unless:
 
 ```bash
 npm run betterer:ci
@@ -211,84 +186,7 @@ Changes to Betterer configuration are permitted only when they satisfy an explic
 
 Passing the repository's fixed coverage threshold does not permit coverage to fall below the Betterer baseline.
 
-`VERIFIED COMPLETE` requires both:
+Passing the repository quality gates requires both:
 
 * all absolute quality gates to pass;
 * all Betterer quality ratchets to remain equal to or better than their committed baselines.
-
-## Allowed Terminal States
-
-An agent may terminate a code-changing task in exactly two states.
-
-### 1. VERIFIED COMPLETE
-
-A task may be considered `VERIFIED COMPLETE` only when:
-
-1. all requested behavior and acceptance criteria are implemented;
-2. all required automated tests pass;
-3. TypeScript type checking passes;
-4. ESLint passes with no errors;
-5. Stylelint passes with no errors for all applicable CSS files;
-6. required coverage thresholds pass;
-7. Betterer remains equal to or better than its committed baseline;
-8. the production build succeeds;
-9. automated WCAG validation passes against `APP_URL`;
-10. all applicable automated validation required by other always-applied MDC rules passes;
-11. no required validation, test, lint rule, type check, coverage requirement, accessibility check, or quality gate was weakened, skipped, disabled, or bypassed to make verification pass.
-
-Do not claim a task is complete if any required verification command fails.
-
-Passing other quality gates does not compensate for a failing required gate.
-
-### 2. VERIFICATION FAILED
-
-Three automated repair attempts have been exhausted and one or more quality gates remain red.
-
-In this state:
-
-* do not make additional code changes;
-* do not claim that the task is complete;
-* clearly state that verification failed;
-* provide the required failure debrief;
-* identify which quality gates remain failing;
-* explain what was attempted;
-* give the best known root cause;
-* recommend the next action.
-
-No other terminal state is permitted.
-
-## Completion Report
-
-At the end of every code-changing task, summarize:
-
-* what changed;
-* any important implementation decisions;
-* tests added or modified;
-* validation performed.
-
-Explicitly report the result of:
-
-```text
-npm run typecheck
-npm run lint
-npm run lint:styles
-npm run test:coverage
-npm run betterer:ci
-npm run build
-npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
-```
-
-Also report any additional automated gate required by another always-applied MDC that was executed as part of the normal quality pipeline.
-
-Example:
-
-```text
-Validation:
-- npm run typecheck — PASS
-- npm run lint — PASS
-- npm run lint:styles — PASS
-- npm run test:coverage — PASS
-- npm run betterer:ci — PASS
-- npm run build — PASS
-- WCAG Tier 1 — PASS
-```

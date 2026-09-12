@@ -1,0 +1,220 @@
+---
+description: Single authoritative completion criteria for every task, including quality gates, focused completion checks, final assumption audit, terminal states, and completion reporting
+alwaysApply: true
+---
+
+# Definition of Done — Single Completion Authority
+
+This file is the single authoritative source for whether a task may be considered complete.
+
+Other MDC files define implementation requirements, domain-specific rules, and focused completion checks. They do not independently authorize completion.
+
+Do not state or imply that a task is complete until every applicable requirement in this file has been satisfied.
+
+## Completion Sequence
+
+Complete these steps in order.
+
+### 1. Planning Is Complete
+
+Before implementation begins:
+
+* complete the mandatory planning phase defined by `00-no-assumptions.mdc`;
+* resolve every decision that requires user input;
+* do not proceed while an unapproved assumption, interpretation, architectural choice, implementation choice, scope decision, or other user-dependent judgment remains unresolved.
+
+### 2. Requested Work Is Complete
+
+Confirm that:
+
+* the requested behavior has been implemented;
+* all supplied acceptance criteria have been satisfied;
+* all applicable Gherkin scenarios have corresponding automated coverage unless they cannot reasonably be automated;
+* no requested behavior was silently omitted, changed, broadened, or narrowed.
+
+### 3. Focused Completion Checks Are Satisfied
+
+Apply every focused completion check relevant to the work.
+
+#### No Assumptions
+
+Confirm that the implementation contains no unapproved assumptions, decisions, interpretations, defaults, conventions, architecture, implementation choices, scope changes, tooling choices, validation behavior, error-handling choices, configuration changes, or workflow changes.
+
+#### DRY
+
+When code is changed:
+
+* inspect the affected code for duplicated logic introduced by the change;
+* reuse or move existing implementations when the same behavior already exists;
+* consolidate duplicated behavior to the nearest appropriate shared scope when doing so preserves clear ownership and boundaries;
+* leave intentional duplication in place when a documented DRY exception applies.
+
+#### KISS
+
+When implementation is changed:
+
+* check for unnecessary abstractions or indirection;
+* remove complexity that is not required by established requirements;
+* prefer existing simple mechanisms over newly introduced infrastructure;
+* confirm that remaining complexity exists for a concrete reason;
+* ensure every meaningful simplicity-versus-complexity tradeoff requiring user input was resolved before implementation.
+
+#### File Organization
+
+When files are added, moved, split, or reorganized:
+
+* place files at the lowest appropriate ownership scope;
+* keep files focused on a clear primary responsibility;
+* avoid unnecessarily combining independently meaningful views, components, hooks, interfaces, types, or other units;
+* place tests at the scope that best represents what they verify;
+* avoid additional directory nesting unless it improves organization;
+* ensure every subjective structural tradeoff requiring user input was resolved before implementation.
+
+#### Performance
+
+When the change can affect loading, rendering, network activity, caching, persistence, media, bundle size, or other performance characteristics:
+
+* check for unnecessary code, data, media, rendering, or network work;
+* identify lazy-loading or code-splitting opportunities without implementing them unless approved;
+* consider responsive asset delivery, including `srcset`, `sizes`, and intrinsic dimensions where applicable;
+* consider existing caching and persistence layers before introducing new ones;
+* ensure persistence choices account for privacy and sensitive data;
+* prefer existing project capabilities and infrastructure;
+* avoid premature performance complexity;
+* ensure every meaningful performance tradeoff requiring user input was resolved before implementation.
+
+#### Testing
+
+When behavior or acceptance criteria change:
+
+* add or update meaningful automated tests where appropriate;
+* test observable behavior rather than private implementation details where practical;
+* preserve meaningful existing coverage;
+* do not delete, skip, disable, or weaken valid tests merely to obtain a green run;
+* ensure supplied Gherkin scenarios are represented by automated tests unless they cannot reasonably be automated;
+* explicitly report any behavioral change that has no corresponding automated test and explain why.
+
+#### Accessibility
+
+When the change affects rendered UI, interaction, forms, navigation, content semantics, focus, input, responsive behavior, or other accessibility-relevant behavior:
+
+* satisfy the applicable WCAG 2.2 A/AA requirements defined by `12-wcag-2_2-AA.mdc`;
+* complete the automated accessibility gate;
+* report any new manual-review consideration introduced by the change as a warning;
+* do not treat manual-review warnings as automated gate failures.
+
+A green automated accessibility gate means no violation detectable by the configured automated checks was found. It does not constitute a claim of full WCAG 2.2 AA conformance.
+
+### 4. Automated Quality Gates Are Green
+
+For every code-changing task, run:
+
+```bash
+npm run typecheck
+npm run lint
+npm run lint:styles
+npm run test:coverage
+npm run betterer:ci
+npm run build
+npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+```
+
+`APP_URL` must be supplied by the configured environment.
+
+Development configuration should point it at the locally running application. Deployed environments should provide their corresponding application URL.
+
+All applicable quality gates must complete successfully.
+
+Never claim that a validation passed unless the corresponding command was actually executed successfully during the current task.
+
+Passing one quality gate does not compensate for another required gate failing.
+
+Do not weaken, skip, disable, bypass, or remove a required validation merely to obtain a green result.
+
+If a command cannot be run because of an environmental or tooling problem:
+
+* clearly state that validation could not be completed;
+* report the exact command that could not be run and the reason;
+* do not describe the task as fully complete or verified.
+
+### 5. Final Assumption Audit
+
+After all applicable automated quality gates are green, perform one final review before declaring the task complete.
+
+Verify that no assumptions, decisions, interpretations, defaults, conventions, architectural choices, implementation choices, scope changes, tooling choices, validation behavior, error-handling choices, configuration changes, workflow changes, or other judgment calls were made without explicit user confirmation when confirmation was required.
+
+If any unconfirmed decision is found:
+
+* do not silently accept or correct it;
+* clearly surface each unconfirmed decision to the user;
+* explain what was chosen and why it matters;
+* prompt the user to confirm the choice or select an alternative;
+* do not declare the task complete until the decision is resolved.
+
+If resolving an unconfirmed decision changes the implementation, repeat every applicable focused completion check and automated quality gate affected by that change.
+
+If no unconfirmed decisions are found, completion may proceed.
+
+## Allowed Terminal States
+
+A code-changing task may terminate in exactly two states.
+
+### 1. VERIFIED COMPLETE
+
+A task may be considered `VERIFIED COMPLETE` only when:
+
+1. planning is complete and all user-dependent decisions were resolved before implementation;
+2. all requested behavior and acceptance criteria are implemented;
+3. all applicable focused completion checks are satisfied;
+4. all required automated tests pass;
+5. TypeScript type checking passes;
+6. ESLint passes with no errors;
+7. Stylelint passes with no errors for all applicable style files;
+8. required coverage thresholds pass;
+9. Betterer remains equal to or better than its committed baseline;
+10. the production build succeeds;
+11. automated WCAG validation passes against `APP_URL`;
+12. no required validation, test, lint rule, type check, coverage requirement, accessibility check, or quality gate was weakened, skipped, disabled, or bypassed to make verification pass;
+13. the Final Assumption Audit finds no unresolved user-dependent decision.
+
+Do not claim a task is complete if any required verification remains unresolved or fails.
+
+### 2. VERIFICATION FAILED
+
+When the automated quality-gate repair limit defined by `10-quality-gates.mdc` has been exhausted and one or more required quality gates remain red:
+
+* stop modifying the code;
+* do not claim that the task is complete;
+* clearly state that verification failed;
+* provide the required failure debrief;
+* identify which quality gates remain failing;
+* explain what was attempted;
+* give the best known root cause;
+* recommend the next action.
+
+No other terminal state is permitted for a code-changing task.
+
+## Completion Report
+
+At the end of every code-changing task, summarize:
+
+* what changed;
+* important implementation decisions that were explicitly established;
+* tests added or modified;
+* validation performed;
+* the result of the Final Assumption Audit;
+* any new manual-review warnings introduced by the change.
+
+Explicitly report the result of:
+
+```text
+npm run typecheck
+npm run lint
+npm run lint:styles
+npm run test:coverage
+npm run betterer:ci
+npm run build
+npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+```
+
+Also report any additional automated validation required by an applicable project rule that was executed as part of the normal quality pipeline.

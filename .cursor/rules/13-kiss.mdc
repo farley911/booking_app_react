@@ -1,3 +1,8 @@
+---
+description: KISS guidance for minimizing unnecessary complexity and escalating meaningful complexity tradeoffs
+alwaysApply: false
+---
+
 # KISS — Keep It Simple
 
 Prefer the simplest implementation that correctly satisfies the established requirements.
@@ -52,7 +57,7 @@ If the simplest implementation creates a meaningful tradeoff, or if added comple
 
 Do not make complexity tradeoffs on the user's behalf.
 
-## Definition of Done
+## Completion Checks
 
 Before completing a change:
 

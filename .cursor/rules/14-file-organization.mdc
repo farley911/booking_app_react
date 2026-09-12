@@ -1,5 +1,6 @@
 ---
-alwaysApply: true
+description: File organization rules for feature ownership, flat structure, focused files, types, and test placement
+alwaysApply: false
 ---
 
 # File Organization
@@ -94,7 +95,7 @@ Place tests at the lowest scope that accurately represents what they verify.
 
 Do not force tests into `src/tests/` when a more specific scope better represents their ownership.
 
-## Definition of Done
+## Completion Checks
 
 Before completing a change:
 

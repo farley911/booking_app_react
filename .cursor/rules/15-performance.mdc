@@ -1,5 +1,6 @@
 ---
-alwaysApply: true
+description: Performance guidance for loading, caching, media, network, rendering, privacy, and optimization tradeoffs
+alwaysApply: false
 ---
 
 # Performance
@@ -176,7 +177,7 @@ When the project already has performance measurement, budgets, profiling, or reg
 
 Do not introduce new performance infrastructure without user approval.
 
-## Definition of Done
+## Completion Checks
 
 Before completing a change:
 

@@ -1,5 +1,6 @@
 ---
-alwaysApply: true
+description: DRY guidance for avoiding duplicated knowledge and choosing the correct shared ownership boundary
+alwaysApply: false
 ---
 
 # DRY — Single Authoritative Implementation
@@ -38,7 +39,7 @@ Intentional duplication is allowed when:
 
 Do not remove meaningful user-facing text, accessibility semantics, validation, authorization, or trust-boundary checks merely to satisfy DRY.
 
-## Definition of Done
+## Completion Checks
 
 Before completing a change:
 

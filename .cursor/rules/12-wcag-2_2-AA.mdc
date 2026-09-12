@@ -1,10 +1,9 @@
 ---
-alwaysApply: true
-------
+description: WCAG 2.2 A/AA accessibility requirements, automated axe validation, browser checks, and manual-review warnings
+alwaysApply: false
+---
 
-## alwaysApply: true
-
-# WCAG 2.2 AA — Definition of Done
+# WCAG 2.2 AA
 
 ## Goal
 
