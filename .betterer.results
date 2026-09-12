@@ -1,0 +1,36 @@
+// BETTERER RESULTS V2.
+//
+// If this file contains merge conflicts, use `betterer merge` to automatically resolve them:
+// https://phenomnomnominal.github.io/betterer/docs/results-file/#merge
+//
+exports[`coverage: branches never decreases`] = {
+  value: `100
+`
+};
+
+exports[`coverage: functions never decreases`] = {
+  value: `16.66
+`
+};
+
+exports[`coverage: lines never decreases`] = {
+  value: `13.79
+`
+};
+
+exports[`coverage: statements never decreases`] = {
+  value: `13.79
+`
+};
+
+exports[`no new TypeScript suppressions`] = {
+  value: `{}`
+};
+
+exports[`no new ESLint suppressions`] = {
+  value: `{}`
+};
+
+exports[`no new Stylelint suppressions`] = {
+  value: `{}`
+};

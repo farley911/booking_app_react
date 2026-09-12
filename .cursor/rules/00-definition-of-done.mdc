@@ -114,6 +114,7 @@ pnpm run typecheck
 pnpm run lint
 pnpm run lint:styles
 pnpm run test:coverage
+pnpm run test:e2e
 pnpm run betterer:ci
 pnpm run build
 pnpm exec axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
@@ -212,6 +213,7 @@ pnpm run typecheck
 pnpm run lint
 pnpm run lint:styles
 pnpm run test:coverage
+pnpm run test:e2e
 pnpm run betterer:ci
 pnpm run build
 pnpm exec axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit

@@ -19,5 +19,10 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [".betterer.ts"]
+  "include": [
+    ".betterer.ts",
+    "vite.config.ts",
+    "jest.config.ts",
+    "playwright.config.ts"
+  ]
 }

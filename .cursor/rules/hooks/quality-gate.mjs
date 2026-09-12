@@ -72,6 +72,12 @@ const gates = [
     displayCommand: 'pnpm run test:coverage',
   },
   {
+    name: 'End-to-end tests',
+    command: pnpm,
+    args: ['run', 'test:e2e'],
+    displayCommand: 'pnpm run test:e2e',
+  },
+  {
     name: 'Quality Ratchet',
     command: pnpm,
     args: ['run', 'betterer:ci'],
