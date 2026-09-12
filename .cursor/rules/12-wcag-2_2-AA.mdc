@@ -1,0 +1,152 @@
+---
+alwaysApply: true
+------
+
+## alwaysApply: true
+
+# WCAG 2.2 AA — Definition of Done
+
+## Goal
+
+Prevent new accessibility regressions while continuously improving WCAG 2.2 A/AA coverage.
+
+## Automated Gate
+
+Accessibility validation is part of the normal Definition-of-Done quality pipeline.
+
+The application URL is supplied through:
+
+```text
+APP_URL
+```
+
+Its value is configured for the active environment.
+
+Development uses the locally running application. Deployed environments use their configured application URL.
+
+Run Tier 1 automated WCAG validation with:
+
+```bash
+npx axe "$APP_URL" \
+  --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa \
+  --exit
+```
+
+Automated accessibility violations fail the normal Definition-of-Done gate.
+
+Manual-review findings do not fail the automated gate.
+
+## Tier 1 — Automated Accessibility
+
+Always run deterministic checks that can be established from source, markup, or DOM semantics.
+
+Check applicable portions of:
+
+* **1.1.1 Non-text Content** — text alternatives exist; decorative content is ignored appropriately.
+* **1.3.1 Info and Relationships** — semantic headings, lists, tables, groups, labels, and relationships.
+* **1.3.5 Identify Input Purpose** — recognized input purposes use appropriate autocomplete semantics.
+* **2.4.1 Bypass Blocks** — bypass/landmark mechanism exists where required.
+* **2.4.2 Page Titled** — document has a meaningful title.
+* **2.4.4 Link Purpose (In Context)** — links expose an accessible name.
+* **2.4.6 Headings and Labels** — headings and controls have programmatic labels.
+* **2.5.3 Label in Name** — accessible names include visible control text.
+* **3.1.1 Language of Page** — document language is declared.
+* **3.1.2 Language of Parts** — language changes are programmatically identified where marked.
+* **3.3.2 Labels or Instructions** — form controls have programmatically associated labels/instructions.
+* **4.1.2 Name, Role, Value** — interactive controls expose valid accessible names, roles, states, properties, and values.
+* **ARIA validity** — roles, attributes, references, and required relationships are valid.
+
+Where a criterion also requires judgment about whether content is meaningful or correct, validate the structural portion automatically and leave the semantic portion to manual review.
+
+## Tier 2 — Browser Accessibility
+
+When browser automation exists, test WCAG requirements that depend on rendering, interaction, state, navigation, or user workflow.
+
+Check applicable portions of:
+
+### Visual / Responsive
+
+* **1.3.2 Meaningful Sequence** — rendered/read order remains meaningful.
+* **1.3.4 Orientation** — content works in portrait and landscape where applicable.
+* **1.4.1 Use of Color** — information is not conveyed solely through color where detectable.
+* **1.4.2 Audio Control** — automatically playing audio can be controlled.
+* **1.4.3 Contrast (Minimum)** — text contrast meets AA thresholds.
+* **1.4.4 Resize Text** — text remains usable at required enlargement.
+* **1.4.10 Reflow** — content reflows without prohibited two-dimensional scrolling.
+* **1.4.11 Non-text Contrast** — controls, focus indicators, and meaningful graphics meet contrast requirements.
+* **1.4.12 Text Spacing** — content remains usable when WCAG text-spacing overrides are applied.
+* **1.4.13 Content on Hover or Focus** — additional content is dismissible, hoverable, and persistent as required.
+
+### Keyboard / Focus
+
+* **2.1.1 Keyboard** — functionality is operable through the keyboard.
+* **2.1.2 No Keyboard Trap** — focus can leave every component.
+* **2.1.4 Character Key Shortcuts** — single-character shortcuts can be disabled/remapped or only operate while focused.
+* **2.4.3 Focus Order** — focus proceeds in a logical order.
+* **2.4.7 Focus Visible** — keyboard focus is visibly indicated.
+* **2.4.11 Focus Not Obscured (Minimum)** — focused elements are not entirely hidden by author-created content.
+
+### Timing / Motion
+
+* **2.2.1 Timing Adjustable** — applicable time limits can be adjusted or extended.
+* **2.2.2 Pause, Stop, Hide** — moving/updating content can be controlled.
+* **2.3.1 Three Flashes or Below Threshold** — flashing content remains within limits where testable.
+
+### Pointer / Input
+
+* **2.5.1 Pointer Gestures** — multipoint/path gestures have simpler alternatives.
+* **2.5.2 Pointer Cancellation** — pointer actions can be cancelled as required.
+* **2.5.4 Motion Actuation** — motion-triggered functionality has conventional input alternatives.
+* **2.5.7 Dragging Movements** — dragging functionality has a non-dragging pointer alternative.
+* **2.5.8 Target Size (Minimum)** — pointer targets meet the WCAG 2.2 minimum-size/spacing requirements.
+
+### Navigation / Behavior
+
+* **2.4.5 Multiple Ways** — applicable pages can be reached by more than one navigation mechanism.
+* **3.2.1 On Focus** — receiving focus does not unexpectedly change context.
+* **3.2.2 On Input** — changing an input does not unexpectedly change context.
+* **3.2.3 Consistent Navigation** — repeated navigation remains consistently ordered.
+* **3.2.4 Consistent Identification** — repeated components are identified consistently.
+* **3.2.6 Consistent Help** — repeated help mechanisms remain consistently positioned.
+
+### Forms / Validation
+
+* **3.3.1 Error Identification** — invalid submissions identify the fields containing errors.
+* **3.3.2 Labels or Instructions** — required instructions are available during interaction.
+* **3.3.3 Error Suggestion** — known corrections are presented when appropriate.
+* **3.3.4 Error Prevention (Legal, Financial, Data)** — applicable submissions can be reviewed, corrected, reversed, or confirmed.
+* **3.3.7 Redundant Entry** — previously supplied information is not unnecessarily requested again.
+* **3.3.8 Accessible Authentication (Minimum)** — authentication does not improperly require cognitive-function tests and permits mechanisms such as password managers/copy-paste.
+
+### Dynamic UI
+
+* **4.1.2 Name, Role, Value** — state/value changes remain programmatically exposed during interaction.
+* **4.1.3 Status Messages** — errors, success states, loading results, counts, and other status changes are exposed to assistive technology without unnecessarily moving focus.
+
+## Manual Review
+
+If a change introduces or modifies behavior that cannot be confidently verified automatically, report the required manual check as a warning.
+
+Examples:
+
+* whether alternative text accurately communicates meaning;
+* whether keyboard interaction is logically usable;
+* whether headings accurately describe content;
+* whether instructions or errors are understandable;
+* screen-reader usability.
+
+Manual review warnings do not fail Definition of Done.
+
+Do not report unrelated manual-review concerns.
+
+## Reporting
+
+Report:
+
+* automated accessibility violation → `FAIL`
+* automated accessibility validation completes successfully → `PASS`
+* new manual-review consideration introduced by the change → `WARNING`
+
+A green automated gate means no accessibility violation detectable by the configured automated checks was found.
+
+It does not constitute a claim of full WCAG 2.2 AA conformance.

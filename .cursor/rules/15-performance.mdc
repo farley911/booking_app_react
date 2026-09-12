@@ -1,0 +1,192 @@
+---
+alwaysApply: true
+---
+
+# Performance
+
+Performance should be considered throughout implementation rather than treated as a separate optimization phase.
+
+Prefer straightforward performance improvements that do not introduce meaningful complexity or behavioral risk.
+
+If an optimization introduces meaningful complexity, infrastructure, maintainability cost, caching risk, privacy concerns, or other tradeoffs:
+
+1. stop before implementing it;
+2. explain the consideration briefly;
+3. present the reasonable options and tradeoffs;
+4. prompt the user to choose;
+5. do not proceed until the user has decided.
+
+## Lazy Loading and Code Splitting
+
+Do not decide independently whether code, data, components, routes, or resources should be lazy loaded or code split.
+
+When lazy loading or code splitting appears beneficial:
+
+1. identify the candidate;
+2. explain the expected performance benefit and any tradeoffs;
+3. prompt the user to choose;
+4. do not implement the change until the user has approved it.
+
+Potential candidates may include:
+
+* routes;
+* features;
+* large or infrequently used components;
+* non-critical third-party libraries;
+* images, video, and other media.
+
+Do not fragment the application into excessively small chunks.
+
+## Third-Party Resources and CDNs
+
+Consider whether static assets, libraries, fonts, media, or other resources can benefit from CDN delivery or an existing CDN already used by the project.
+
+Do not introduce a new CDN or external dependency without user approval.
+
+Consider:
+
+* caching behavior;
+* latency;
+* availability;
+* privacy;
+* security;
+* dependency reliability;
+* whether the project already provides an appropriate delivery mechanism;
+* responsive asset delivery;
+* `srcset` and `sizes` for responsive images;
+* intrinsic image dimensions such as `width` and `height`;
+* avoiding unnecessarily large assets for the rendered size;
+* whether CDN image transformation or resizing capabilities already exist.
+
+Prefer existing infrastructure when it adequately solves the problem.
+
+## Caching and Persistence
+
+Do not default to a single caching or persistence strategy.
+
+Evaluate the available persistence layers based on the data's:
+
+* lifetime;
+* ownership;
+* scope;
+* sharing requirements;
+* consistency requirements;
+* sensitivity;
+* cost of regeneration or retrieval.
+
+Consider existing mechanisms including:
+
+* in-memory state;
+* URL state;
+* browser storage;
+* browser/HTTP caching;
+* service-worker or cache storage;
+* server-side caching;
+* database persistence.
+
+Prefer the lowest-cost existing mechanism that correctly satisfies the requirement.
+
+Do not introduce a new persistence mechanism when an existing one is better suited to the use case.
+
+If multiple persistence strategies have meaningful tradeoffs, present them to the user before proceeding.
+
+## Privacy and Sensitive Data
+
+Performance and persistence decisions must account for privacy and data sensitivity.
+
+Consider PII, credentials, authentication information, tokens, secrets, and other sensitive information before deciding where data is stored, cached, transmitted, or exposed.
+
+Do not place sensitive information into URLs, logs, analytics, client-visible storage, or long-lived caches unless explicitly required and appropriate for the use case.
+
+If persistence or caching of sensitive information is being considered, prompt the user before proceeding.
+
+## Images and Media
+
+Avoid unnecessarily large media resources.
+
+Consider:
+
+* appropriate intrinsic dimensions;
+* `srcset` and `sizes`;
+* responsive image delivery;
+* serving assets appropriate to their rendered dimensions;
+* compression;
+* modern formats when already supported by the project;
+* CDN transformation or resizing capabilities already available;
+* avoiding media downloads that are not required for the current view.
+
+Do not independently decide to lazy load media. Present the consideration to the user before implementing lazy loading.
+
+## Bundle Size
+
+Avoid introducing unnecessary client-side code.
+
+Consider:
+
+* existing dependencies before adding new ones;
+* tree-shakeable imports;
+* avoiding importing an entire library when only a small portion is needed;
+* duplicate dependencies;
+* whether code could be removed from the initial bundle.
+
+Do not independently move code out of the initial bundle. If code splitting appears beneficial, present the tradeoff to the user first.
+
+## Network Requests
+
+Avoid unnecessary or duplicate network activity.
+
+Consider:
+
+* reusing already available data;
+* caching;
+* request deduplication;
+* avoiding repeated requests for unchanged data;
+* reducing unnecessary request waterfalls;
+* fetching data at the scope where it is actually needed.
+
+Do not introduce batching, caching infrastructure, or other network abstractions without considering whether existing mechanisms already solve the problem.
+
+## Rendering and Computation
+
+Avoid unnecessary rendering and repeated expensive computation.
+
+Prefer simple implementations first.
+
+Only introduce memoization, caching, virtualization, or similar optimization mechanisms when there is a concrete reason for them.
+
+If introducing one of these mechanisms creates a meaningful tradeoff, prompt the user before proceeding.
+
+## Fonts and Critical Resources
+
+Avoid blocking initial rendering with resources that are not required immediately.
+
+Consider:
+
+* which resources are actually critical;
+* existing font-loading mechanisms;
+* preload candidates;
+* preconnect candidates;
+* prefetch candidates.
+
+Do not independently add preload, preconnect, prefetch, defer, or lazy-loading behavior when doing so requires a performance tradeoff decision. Present the consideration to the user first.
+
+## Performance Regression
+
+When the project already has performance measurement, budgets, profiling, or regression tooling, preserve and use it.
+
+Do not introduce new performance infrastructure without user approval.
+
+## Definition of Done
+
+Before completing a change:
+
+* consider whether unnecessary code, data, media, rendering, or network work has been introduced;
+* identify lazy-loading or code-splitting opportunities without implementing them until approved;
+* consider responsive asset delivery, including `srcset`, `sizes`, and intrinsic dimensions;
+* consider existing caching and persistence layers before introducing new ones;
+* verify that persistence choices account for privacy and sensitive data;
+* prefer existing project capabilities and infrastructure;
+* avoid premature performance complexity;
+* prompt the user whenever a meaningful performance tradeoff requires a decision.
+
+The goal is not maximum optimization at any cost. The goal is appropriate performance with minimal unnecessary complexity.

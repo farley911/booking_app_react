@@ -1,0 +1,294 @@
+---
+description: Non-negotiable engineering quality and completion requirements
+alwaysApply: true
+-----------------
+
+# Engineering Quality Gates
+
+These requirements are mandatory for every code-changing task.
+
+## Definition of Done
+
+Do not state or imply that a task is complete until all applicable validation has been performed.
+
+Before declaring a task complete, run all repository quality gates:
+
+```bash
+npm run typecheck
+npm run lint
+npm run lint:styles
+npm run test:coverage
+npm run betterer:ci
+npm run build
+npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+```
+
+`APP_URL` must be supplied by the configured environment.
+
+Development configuration should point it at the locally running application. Deployed environments should provide their corresponding application URL.
+
+All applicable quality gates must complete successfully.
+
+Manual accessibility-review warnings do not fail Definition of Done.
+
+All applicable requirements defined by other `alwaysApply` MDC rules must also be satisfied before completion.
+
+## Validation Failures
+
+If any validation fails:
+
+* investigate the failure;
+* fix failures caused by the current work;
+* re-run the affected validation;
+* do not claim the task is complete while any applicable validation remains red.
+
+If a command cannot be run because of an environmental or tooling problem:
+
+* clearly state that validation could not be completed;
+* report the exact command that could not be run and the reason;
+* do not describe the task as fully complete or verified.
+
+Never claim that tests, coverage, linting, style linting, type checking, accessibility validation, Betterer, or a build passed unless the corresponding command was actually executed successfully during the current task.
+
+## Lint and Type Safety
+
+Never silence an error merely to obtain a green run.
+
+Do not introduce any of the following as shortcuts:
+
+* `eslint-disable`;
+* `stylelint-disable`;
+* `@ts-ignore`;
+* `@ts-nocheck`;
+* unnecessary `any`;
+* disabled compiler checks;
+* disabled lint rules;
+* suppressed errors or warnings.
+
+These mechanisms may only be used when there is a specific technical justification.
+
+Fix the underlying problem whenever reasonably possible.
+
+ESLint and Stylelint serve different purposes.
+
+Passing ESLint does not substitute for passing Stylelint.
+
+Passing Stylelint does not substitute for passing ESLint.
+
+## Error Handling
+
+Do not suppress errors merely to prevent failures.
+
+Caught errors must be:
+
+* handled meaningfully;
+* transformed intentionally;
+* or surfaced appropriately.
+
+Never introduce empty catch blocks.
+
+## Configuration Changes
+
+Do not modify:
+
+* ESLint configuration;
+* Stylelint configuration;
+* test runner configuration;
+* TypeScript configuration;
+* build tool configuration;
+* Betterer configuration;
+* `.betterer.results`;
+* package scripts;
+* compiler options;
+* coverage configuration;
+* quality-gate configuration;
+
+merely to hide or bypass an error.
+
+Configuration changes must solve an actual project requirement.
+
+`.betterer.results` is an exception only when it is updated by normal `npm run betterer` execution because a tracked quality metric has genuinely improved.
+
+Do not:
+
+* manually edit `.betterer.results`;
+* use Betterer update/force mechanisms to accept a regression;
+* weaken Betterer tests;
+* remove tracked metrics;
+* add exclusions merely to make Betterer pass.
+
+## Dependencies
+
+Use npm for this repository.
+
+Do not introduce a new runtime or development dependency unless it provides a clear benefit to the requested task.
+
+Before adding a dependency:
+
+* verify that the existing stack cannot reasonably solve the problem;
+* prefer established, actively maintained packages;
+* explain the reason for adding it.
+
+Do not upgrade unrelated dependencies as part of another task.
+
+## Automated Quality Gate
+
+This repository has an automated stop hook that enforces the repository quality gates.
+
+When the hook rejects completion:
+
+* treat its output as authoritative;
+* fix the reported failures before attempting completion again;
+* do not attempt to bypass, disable, modify, or remove the hook;
+* do not alter quality-gate scripts merely to circumvent a failure.
+
+You have at most three automated repair attempts.
+
+If all repair attempts are exhausted:
+
+* stop modifying the code;
+* do not claim the task is complete;
+* provide the required failure debrief.
+
+A failing quality gate must be resolved by fixing the underlying code, test, styling, types, configuration, build, accessibility issue, or other validated requirement.
+
+Do not make a quality gate pass by:
+
+* lowering coverage thresholds;
+* disabling ESLint rules;
+* disabling Stylelint rules;
+* adding blanket lint suppressions;
+* excluding files from coverage without justification;
+* skipping tests;
+* deleting tests;
+* loosening assertions;
+* changing TypeScript strictness;
+* adding `@ts-ignore` or `@ts-nocheck`;
+* disabling accessibility rules merely to make validation pass;
+* modifying or bypassing the quality-gate hook.
+
+## Quality Ratchet
+
+This repository uses Betterer to prevent measurable code quality from regressing over time.
+
+Betterer is a quality ratchet, not a replacement for the repository's absolute quality gates.
+
+The current Betterer baseline stored in `.betterer.results` represents the minimum acceptable quality for all tracked metrics.
+
+A task is not `VERIFIED COMPLETE` unless:
+
+```bash
+npm run betterer:ci
+```
+
+passes successfully after the test suite has produced its coverage results.
+
+When Betterer reports a regression:
+
+* fix the underlying regression;
+* do not accept a worse baseline;
+* do not modify the results file manually;
+* do not use `betterer --update` or `betterer -u` to accept a regression;
+* do not weaken or remove Betterer tests;
+* do not exclude affected files merely to make the ratchet pass.
+
+When quality has genuinely improved and `betterer:ci` reports that the committed baseline is stale:
+
+* run `npm run betterer` without `--update`;
+* allow Betterer to record the improved baseline;
+* commit the resulting `.betterer.results` change;
+* re-run `npm run betterer:ci`.
+
+Normal Betterer execution may advance the baseline when quality improves.
+
+It must never be used to accept a worse result.
+
+Do not directly edit `.betterer.results`.
+
+Do not modify `.betterer.ts`, Betterer scripts, tracked metrics, exclusions, or Betterer configuration as part of an unrelated task.
+
+Changes to Betterer configuration are permitted only when they satisfy an explicit project requirement and do not weaken existing quality protections.
+
+Passing the repository's fixed coverage threshold does not permit coverage to fall below the Betterer baseline.
+
+`VERIFIED COMPLETE` requires both:
+
+* all absolute quality gates to pass;
+* all Betterer quality ratchets to remain equal to or better than their committed baselines.
+
+## Allowed Terminal States
+
+An agent may terminate a code-changing task in exactly two states.
+
+### 1. VERIFIED COMPLETE
+
+A task may be considered `VERIFIED COMPLETE` only when:
+
+1. all requested behavior and acceptance criteria are implemented;
+2. all required automated tests pass;
+3. TypeScript type checking passes;
+4. ESLint passes with no errors;
+5. Stylelint passes with no errors for all applicable CSS files;
+6. required coverage thresholds pass;
+7. Betterer remains equal to or better than its committed baseline;
+8. the production build succeeds;
+9. automated WCAG validation passes against `APP_URL`;
+10. all applicable automated validation required by other always-applied MDC rules passes;
+11. no required validation, test, lint rule, type check, coverage requirement, accessibility check, or quality gate was weakened, skipped, disabled, or bypassed to make verification pass.
+
+Do not claim a task is complete if any required verification command fails.
+
+Passing other quality gates does not compensate for a failing required gate.
+
+### 2. VERIFICATION FAILED
+
+Three automated repair attempts have been exhausted and one or more quality gates remain red.
+
+In this state:
+
+* do not make additional code changes;
+* do not claim that the task is complete;
+* clearly state that verification failed;
+* provide the required failure debrief;
+* identify which quality gates remain failing;
+* explain what was attempted;
+* give the best known root cause;
+* recommend the next action.
+
+No other terminal state is permitted.
+
+## Completion Report
+
+At the end of every code-changing task, summarize:
+
+* what changed;
+* any important implementation decisions;
+* tests added or modified;
+* validation performed.
+
+Explicitly report the result of:
+
+```text
+npm run typecheck
+npm run lint
+npm run lint:styles
+npm run test:coverage
+npm run betterer:ci
+npm run build
+npx axe "$APP_URL" --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa --exit
+```
+
+Also report any additional automated gate required by another always-applied MDC that was executed as part of the normal quality pipeline.
+
+Example:
+
+```text
+Validation:
+- npm run typecheck — PASS
+- npm run lint — PASS
+- npm run lint:styles — PASS
+- npm run test:coverage — PASS
+- npm run betterer:ci — PASS
+- npm run build — PASS
+- WCAG Tier 1 — PASS
+```

@@ -1,0 +1,50 @@
+---
+alwaysApply: true
+---
+
+# DRY — Single Authoritative Implementation
+
+Avoid duplicating the same knowledge, logic, transformation, validation, or behavior in multiple locations.
+
+When the same behavior is required from multiple call sites, place that behavior in the lowest shared scope that can own it correctly, and have callers reuse that implementation rather than recreating it.
+
+If the existing implementation is scoped too narrowly to be reused, move or refactor it to the nearest appropriate shared scope rather than duplicating it.
+
+Before adding new logic, search the affected scope for an existing implementation that should be reused, extended, or moved.
+
+Do not abstract code merely because it looks similar. Only consolidate code when it represents the same underlying knowledge or behavior.
+
+## Intentional Duplication Exceptions
+
+Duplication is acceptable when consolidating the code would create a misleading abstraction, couple unrelated domains, reduce readability, weaken boundaries, or make future changes harder.
+
+Intentional duplication is allowed when:
+
+* similar code represents different business concepts or ownership boundaries;
+* the duplicated implementation is small and likely to evolve independently;
+* sharing it would require excessive parameters, conditionals, or branching;
+* framework, platform, generated-code, or deployment boundaries prevent practical reuse;
+* duplicating a simple expression is clearer than introducing an abstraction;
+* tests intentionally repeat setup or expectations to preserve clarity and independence;
+* human-readable text is repeated intentionally for clarity, context, or accessibility rather than being abstracted into opaque constants;
+* WCAG/accessibility requirements require repeated labels, instructions, descriptions, announcements, or semantic markup to remain understandable and correctly associated with the relevant UI;
+* similar mapping or adapter logic exists at separate API, persistence, framework, or integration boundaries to keep those layers decoupled;
+* configuration, schema, or metadata declarations are clearer and safer when explicit rather than generated through abstraction;
+* examples, fixtures, documentation, or demonstrations need to remain understandable in isolation;
+* migration or versioned code should remain immutable rather than being refactored to depend on newer shared logic;
+* performance-sensitive duplication is justified by measured evidence that abstraction would introduce a meaningful regression;
+* security, authorization, validation, or trust-boundary checks are intentionally repeated as defense in depth;
+* protocol or contract representations are intentionally duplicated across boundaries where sharing implementation would create undesirable coupling.
+
+Do not remove meaningful user-facing text, accessibility semantics, validation, authorization, or trust-boundary checks merely to satisfy DRY.
+
+## Definition of Done
+
+Before completing a change:
+
+* inspect the affected code for duplicated logic introduced by the change;
+* reuse or move existing implementations when the same behavior already exists;
+* consolidate duplicated behavior to the nearest appropriate shared scope when doing so preserves clear ownership and boundaries;
+* leave intentional duplication in place when one of the documented exceptions applies.
+
+DRY should reduce duplicated knowledge without creating abstractions that are harder to understand or maintain than the duplication they replace.

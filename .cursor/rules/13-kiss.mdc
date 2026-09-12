@@ -1,0 +1,65 @@
+# KISS — Keep It Simple
+
+Prefer the simplest implementation that correctly satisfies the established requirements.
+
+Do not introduce complexity unless it is necessary to solve a demonstrated problem.
+
+## Implementation Rules
+
+* prefer straightforward control flow over clever or compressed logic;
+* prefer explicit code over abstractions that obscure behavior;
+* avoid unnecessary layers, wrappers, indirection, factories, adapters, or configuration;
+* do not introduce patterns solely because they may be useful in the future;
+* do not generalize a solution beyond the requirements currently established;
+* avoid unnecessary state, dependencies, services, or architectural layers;
+* use existing framework and platform capabilities before creating custom infrastructure;
+* prefer the smallest change that fully solves the requested problem;
+* keep functions, components, and modules focused on a clear purpose;
+* split logic when doing so makes behavior easier to understand, not merely to reduce line count.
+
+## Avoid Premature Complexity
+
+Do not add complexity for hypothetical future requirements.
+
+Examples include:
+
+* extension points with no current consumer;
+* configuration for values that do not currently vary;
+* generic abstractions with only one real use case;
+* factories where direct construction is sufficient;
+* additional state derived entirely from existing state;
+* custom utilities that duplicate existing platform or framework behavior.
+
+If a more complex implementation is required, the reason for the complexity must be directly traceable to an established requirement or existing system constraint.
+
+## Simplicity vs. Shortness
+
+Simple does not mean shortest.
+
+Prefer readable, maintainable, explicit code over terse code that requires additional reasoning to understand.
+
+Clarity takes priority over reducing lines of code.
+
+## Complexity Escalation
+
+If the simplest implementation creates a meaningful tradeoff, or if added complexity appears necessary or preferable:
+
+* stop before introducing the complexity;
+* explain the tradeoff briefly;
+* present the simple option and the more complex option;
+* prompt the user to choose;
+* do not proceed until the user has decided.
+
+Do not make complexity tradeoffs on the user's behalf.
+
+## Definition of Done
+
+Before completing a change:
+
+* check whether the implementation contains unnecessary abstractions or indirection;
+* remove complexity that is not required by the established requirements;
+* prefer existing simple mechanisms over newly introduced infrastructure;
+* confirm that any remaining complexity exists for a concrete reason;
+* escalate any meaningful simplicity-versus-complexity tradeoff to the user before proceeding.
+
+The goal is not minimal code. The goal is minimal unnecessary complexity.

@@ -1,0 +1,106 @@
+---
+alwaysApply: true
+---
+
+# File Organization
+
+Prefer a flat, feature-oriented project structure.
+
+Use this as the default structure when it does not conflict with framework-required conventions:
+
+```text
+src/
+  assets/
+  features/
+  routes/
+  styles/
+  tests/
+  types/
+```
+
+Framework-required directory conventions take precedence where necessary.
+
+## Flat Structure
+
+Keep directories flat by default.
+
+Do not create a new subdirectory simply to categorize a small number of files.
+
+A parent directory may begin to justify another level of organization when it contains roughly five files, but this is not a hard threshold.
+
+Sometimes allowing a directory to grow is clearer than introducing another level of nesting.
+
+If there is a meaningful tradeoff between keeping the directory flat and introducing a new folder:
+
+1. stop before changing the structure;
+2. explain the tradeoff briefly;
+3. present the options;
+4. prompt the user to choose;
+5. do not proceed until the user has decided.
+
+## Feature Organization
+
+Distinct application features belong under:
+
+```text
+src/features/
+```
+
+Keep files associated with a feature within that feature's scope when appropriate, including:
+
+* views and components;
+* hooks;
+* tests;
+* styles;
+* interfaces and types;
+* other feature-specific implementation files.
+
+Do not move feature-specific files to global directories solely because a global directory exists.
+
+## File Responsibility
+
+Keep files short, focused, and easy to identify by responsibility.
+
+* each file should have one clear primary purpose;
+* separate distinct views, components, hooks, services, utilities, and other independently meaningful units into their own files;
+* do not combine independently meaningful UI sections into one large file;
+* split files when multiple independent responsibilities emerge;
+* do not split files merely to reduce line count when the resulting files would not represent meaningful independent concepts.
+
+## Interfaces and Types
+
+Each interface or type should normally own its own file.
+
+Do not define interfaces or types inside an implementation file merely because they are currently used there.
+
+Avoid grouping multiple independently meaningful interfaces or types into a single generic file.
+
+File names should clearly identify the interface or type defined by the file.
+
+Place feature-specific interfaces and types with the feature that owns them.
+
+Use the global `src/types/` scope for types whose ownership is genuinely broader than a single feature.
+
+## Tests
+
+Place tests at the lowest scope that accurately represents what they verify.
+
+* unit tests should normally live with the feature or implementation they test;
+* component tests should normally live with the feature or component they test;
+* integration tests may live with a feature when the integration is feature-scoped;
+* integration tests may move to a broader scope when they span multiple features or systems;
+* end-to-end tests may live at a feature level when the workflow is feature-scoped;
+* end-to-end tests may live at the global test level when the workflow spans broader application behavior.
+
+Do not force tests into `src/tests/` when a more specific scope better represents their ownership.
+
+## Definition of Done
+
+Before completing a change:
+
+* confirm new files are placed at the lowest appropriate ownership scope;
+* confirm files have a clear, focused responsibility;
+* confirm independently meaningful views, components, hooks, interfaces, and types are not unnecessarily combined;
+* confirm tests are located at the scope that best represents what they verify;
+* avoid introducing additional directory nesting unless it improves organization;
+* prompt the user before making a subjective structural tradeoff.

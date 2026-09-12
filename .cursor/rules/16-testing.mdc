@@ -1,0 +1,92 @@
+---
+
+description: Framework-agnostic testing integrity, behavioral coverage, and acceptance-criteria requirements
+alwaysApply: true
+-----------------
+
+# Testing and Acceptance Criteria
+
+## Test Integrity
+
+When changing behavior:
+
+* add or update tests when appropriate;
+* test observable behavior rather than implementation details where practical;
+* preserve meaningful existing coverage.
+
+Never make a test pass by:
+
+* deleting a valid test;
+* skipping or disabling a valid test;
+* weakening an assertion without justification;
+* removing meaningful coverage;
+* changing production behavior solely to satisfy an incorrect test.
+
+If an existing test is incorrect, explain why before changing it.
+
+Any change that introduces or modifies observable behavior should include corresponding tests.
+
+Exceptions are allowed for:
+
+* styling-only changes;
+* static content changes;
+* configuration-only changes where behavioral testing is not meaningful.
+
+If no test is added for a behavioral change, explain why.
+
+## Test Behavior
+
+Prefer tests that exercise behavior through the same public interfaces available to the code's consumers.
+
+Prefer:
+
+* observable inputs and outputs;
+* user-visible behavior;
+* public APIs;
+* externally observable state changes;
+* meaningful integration boundaries.
+
+Avoid:
+
+* testing private implementation details;
+* asserting internal state unnecessarily;
+* depending on internal structure that is not part of the contract;
+* mocks that reproduce the implementation instead of testing behavior.
+
+Use the testing capabilities already present in the project.
+
+Do not introduce a new testing framework, library, or test architecture without user approval.
+
+## Test Scope
+
+Place tests at the lowest level that can confidently verify the required behavior.
+
+Use broader integration or end-to-end testing when behavior cannot be meaningfully established at a narrower level.
+
+Do not duplicate the same behavior across multiple test levels without a concrete reason.
+
+## Gherkin / Acceptance Criteria
+
+Any Gherkin supplied in the task prompt is normative acceptance criteria.
+
+A scenario written using `Feature`, `Scenario`, `Given`, `When`, `Then`, `And`, or `But` MUST be treated as a required behavioral test case.
+
+For every supplied scenario:
+
+1. implement the behavior described by the scenario;
+2. add or update an automated test that exercises that behavior;
+3. preserve the intent and observable behavior of the scenario;
+4. run the test as part of the normal test suite;
+5. do not consider the task complete unless every supplied scenario passes.
+
+Scenario titles SHOULD be reflected in test descriptions where practical so acceptance criteria can be traced to automated tests.
+
+Do not interpret a passing existing test suite as proof that supplied Gherkin criteria have been satisfied.
+
+New acceptance criteria require corresponding test coverage.
+
+If a Gherkin scenario cannot reasonably be automated at the current test level:
+
+* explicitly report that scenario;
+* explain why it cannot reasonably be automated;
+* do not silently consider it complete.

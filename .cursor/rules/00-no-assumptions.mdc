@@ -1,0 +1,51 @@
+---
+alwaysApply: true
+---
+
+# No Assumptions, Decisions, or Unapproved Interpretation
+
+Do not make assumptions, decisions, interpretations, architectural choices, implementation choices, scope decisions, or other judgment calls on behalf of the user.
+
+If any part of the task requires a choice that has not already been explicitly established:
+
+1. stop before making the choice;
+2. explain the consideration clearly and briefly;
+3. present the available options;
+4. prompt the user to choose;
+5. do not continue implementation until the user has responded.
+
+Do not silently introduce conventions, defaults, dependencies, abstractions, tooling, project structure, validation behavior, error handling, configuration, or workflow changes.
+
+Do not infer user intent when multiple reasonable interpretations exist.
+
+Previously established decisions may be reused only when they clearly apply to the current task.
+
+## Naming Exception
+
+The agent may make naming decisions for non-user-facing implementation details without requiring approval.
+
+Names must prefer **clarity before brevity**:
+
+* use descriptive names that communicate purpose and intent;
+* avoid abbreviations unless they are widely understood within the codebase or domain;
+* avoid overly terse variable, function, type, file, or identifier names;
+* prefer a longer clear name over a shorter ambiguous one.
+
+User-facing names, labels, terminology, copy, and externally visible identifiers still require explicit user direction when not already established.
+
+# Mandatory Plan Phase
+
+Every task must go through a planning phase before implementation begins.
+
+During the plan phase:
+
+* inspect the requested change and relevant existing code;
+* identify affected files, systems, dependencies, and behaviors;
+* identify ambiguities, unresolved decisions, risks, conflicts, and missing information;
+* identify existing implementations that should be reused or modified;
+* identify any decisions that require user input;
+* resolve all user-dependent decisions before writing code.
+
+No implementation code may be written until the plan phase is complete and all unresolved user decisions have been answered.
+
+The purpose of the plan phase is to prevent assumptions and resolve design or implementation questions before changes are made.

@@ -1,0 +1,36 @@
+{
+  "name": "base-image",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo npm run dev is not configured. Install a dev server or framework CLI and point this script at it. && exit 1",
+    "build": "echo npm run build is not configured. Install a build tool and point this script at it. && exit 1",
+    "start": "echo npm start is not configured. Point this script at the server that serves START_URL. && exit 1",
+    "preview": "echo npm run preview is not configured. Point this script at a production-like local server if your stack has one. && exit 1",
+    "test": "echo npm test is not configured. Install a test runner and point this script at it. && exit 1",
+    "test:watch": "echo npm run test:watch is not configured. Point this script at your test runner watch mode. && exit 1",
+    "test:coverage": "echo npm run test:coverage is not configured. Point this script at your test runner coverage run and have it write coverage/coverage-summary.json so the Betterer coverage ratchets can be re-enabled. && exit 1",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
+    "lint": "eslint .",
+    "lint:styles": "stylelint \"src/**/*.css\"",
+    "lint:styles:fix": "stylelint \"src/**/*.css\" --fix",
+    "betterer": "betterer",
+    "betterer:ci": "betterer ci",
+    "check": "npm run typecheck && npm run lint && npm run lint:styles && npm run test:coverage && npm run betterer:ci && npm run build"
+  },
+  "devDependencies": {
+    "@betterer/betterer": "^6.0.0-alpha.1",
+    "@betterer/cli": "^6.0.0-alpha.1",
+    "@betterer/constraints": "^6.0.0-alpha.1",
+    "@betterer/regexp": "^6.0.0-alpha.1",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.13.3",
+    "eslint": "^10.9.0",
+    "globals": "^17.11.0",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.67.0"
+  }
+}
