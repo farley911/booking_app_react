@@ -25,14 +25,27 @@ const config: Config = {
       },
     ],
   },
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/test/**',
+    '!src/**/*.test.{ts,tsx}',
     '!src/routeTree.gen.ts',
-    '!src/tests/**',
-    '!src/vite-env.d.ts',
   ],
   coverageDirectory: 'coverage',
-  coverageReporters: ['json-summary', 'text'],
+  coverageReporters: [
+    'text',
+    'lcov',
+    'json-summary',
+  ],
 }
 
 export default config

@@ -25,6 +25,11 @@
     "check": "pnpm run typecheck && pnpm run lint && pnpm run lint:styles && pnpm run test:coverage && pnpm run test:e2e && pnpm run betterer:ci && pnpm run build"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^9.4.0",
+    "@mui/material": "^9.4.0",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",
     "@tanstack/react-query-devtools": "latest",

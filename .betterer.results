@@ -9,17 +9,17 @@ exports[`coverage: branches never decreases`] = {
 };
 
 exports[`coverage: functions never decreases`] = {
-  value: `16.66
+  value: `37.5
 `
 };
 
 exports[`coverage: lines never decreases`] = {
-  value: `13.79
+  value: `38.09
 `
 };
 
 exports[`coverage: statements never decreases`] = {
-  value: `13.79
+  value: `39.53
 `
 };
 
