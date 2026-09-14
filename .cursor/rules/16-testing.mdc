@@ -74,6 +74,7 @@ For every supplied scenario:
 
 1. implement the behavior described by the scenario;
 2. add or update an automated test that exercises that behavior;
+    * If a Gherkin scenario lists a test tier use it as the highest tier to test. Otherwise, use the lowest test tier that can confidently verify the behavior.
 3. preserve the intent and observable behavior of the scenario;
 4. run the test as part of the normal test suite;
 5. do not consider the task complete unless every supplied scenario passes.
@@ -89,3 +90,65 @@ If a Gherkin scenario cannot reasonably be automated at the current test level:
 * explicitly report that scenario;
 * explain why it cannot reasonably be automated;
 * do not silently consider it complete.
+
+## Test Tiers
+
+Use the lowest test tier that can confidently verify the behavior.
+
+Tests should form a pyramid: broad coverage at lower-cost tiers, with progressively fewer tests as scope and execution cost increase.
+
+### Tier 1 — Unit
+
+Unit tests form the base of the test suite.
+
+Use them for isolated logic such as:
+
+* transformations;
+* calculations;
+* validation;
+* utilities;
+* state transitions;
+* other behavior that can be verified without rendering or external systems.
+
+Unit tests should be fast, deterministic, and narrowly scoped.
+
+### Tier 2 — Component
+
+Component tests verify behavior within an individual UI component or similarly scoped interactive unit.
+
+Use them for:
+
+* user interactions;
+* rendering behavior;
+* component state visible through observable behavior;
+* regressions within a component;
+* accessibility behavior that can be verified at component scope.
+
+Test through the component's public and user-observable behavior rather than its internal implementation.
+
+### Tier 3 — End-to-End
+
+End-to-end tests verify complete application workflows through the deployed or realistically assembled system.
+
+Reserve E2E tests for critical paths where confidence cannot be adequately established through lower tiers.
+
+Examples include:
+
+* critical user journeys;
+* authentication flows;
+* high-value transactional workflows;
+* workflows spanning multiple important application boundaries.
+
+Do not use E2E tests as the primary means of testing behavior that can be reliably verified at a lower tier.
+
+### Tier Selection
+
+When deciding where a test belongs:
+
+1. start with the lowest tier capable of confidently verifying the behavior;
+2. move upward only when the lower tier cannot adequately establish the required behavior;
+3. avoid duplicating the same behavior across tiers unless the additional test provides meaningfully different confidence;
+4. keep the majority of behavioral coverage in the lower tiers;
+5. keep E2E coverage intentionally small and focused on critical paths.
+
+A test's tier is determined by what it verifies, not by the tooling used to execute it.

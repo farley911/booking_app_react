@@ -1,0 +1,43 @@
+---
+description: Always consider the project's test tiers before planning or adding tests
+alwaysApply: true
+-----------------
+
+# Test Planning
+
+Before planning, adding, or modifying tests, review and apply the test-tier guidance defined in `16-testing.mdc`.
+
+Do not plan tests until the appropriate tier has been considered.
+
+## Test Tiers
+
+### Tier 1 — Unit
+
+Verify isolated logic without rendering or external systems.
+
+### Tier 2 — Component
+
+Verify observable behavior within an individual UI component or similarly scoped interactive unit.
+
+### Tier 3 — End-to-End
+
+Verify critical complete workflows through the assembled application.
+
+Reserve this tier for behavior that cannot be confidently established at a lower tier.
+
+## Planning Requirement
+
+Before proposing or implementing tests:
+
+1. identify the behavior that requires verification;
+2. review the detailed tier definitions and testing requirements in `16-testing.mdc`;
+3. determine the lowest appropriate test tier;
+4. if the appropriate tier is unclear, stop and ask the user before planning or implementing the test;
+5. prefer the lowest tier unless a higher tier provides meaningfully different confidence;
+6. avoid duplicating the same behavior across tiers without a concrete reason.
+
+Use the lowest tier that can confidently verify the required behavior.
+
+The test tier is determined by what the test verifies, not by the tooling used to execute it.
+
+`16-testing.mdc` is the authoritative source for detailed test-tier definitions and testing requirements.
